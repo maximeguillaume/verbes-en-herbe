@@ -42,7 +42,11 @@
 }
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+button,label,.chip input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 body{
+  margin:0;
   background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:17px; line-height:1.5;
   padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
   padding-block:20px 40px;
@@ -179,6 +183,45 @@ table.conj tr.me td:last-child{border-radius:0 8px 8px 0}
 
 #confetti{position:fixed;inset:0;pointer-events:none;width:100%;height:100%;z-index:20}
 .foot{color:var(--muted);font-size:14px;text-align:center;margin:0}
+
+/* Tablets: wider page, bigger touch targets */
+@media (min-width:700px){
+  body{font-size:19px;padding-block:28px 48px}
+  .wrap{max-width:940px;gap:18px}
+  .sheet{--mx:72px;padding:40px 44px 44px calc(var(--mx) + 32px);min-height:560px}
+  .sheet::before{left:26px;width:16px}
+  .screen{gap:30px}
+  h2{font-size:32px}
+  .label{font-size:15px}
+  .chips{gap:14px}
+  .chip span{padding:16px 24px;font-size:21px;border-radius:18px;min-height:60px}
+  .chip span i{width:14px;height:14px}
+  #len5 + span,#len10 + span,#len20 + span{min-width:72px;justify-content:center}
+  .btn{padding:18px 34px;font-size:24px;border-radius:20px;min-height:64px}
+  .icon-btn,.pill{padding:10px 16px;font-size:17px}
+  .dot{width:28px;height:28px}
+  .dot svg{width:15px;height:15px}
+  .tag{font-size:18px;padding:6px 16px}
+  .verb{font-size:64px}
+  .sentence{font-size:36px;gap:16px}
+  #answer{font-size:34px;padding:12px 18px;border-radius:16px}
+  .accents{gap:10px}
+  .accents button{min-width:60px;min-height:60px;font-size:26px;border-radius:14px}
+  .feedback{padding:22px 26px;border-radius:20px}
+  .feedback h3{font-size:30px}
+  .answer-show{font-size:28px}
+  table.conj{font-size:21px}
+  table.conj td{padding:5px 16px 5px 0}
+  .mistakes li{padding:14px 18px}
+  .foot{font-size:16px}
+}
+/* Landscape tablet: question on the left, correction on the right, so both stay visible above the keyboard */
+@media (min-width:1000px) and (orientation:landscape){
+  .wrap{max-width:1180px}
+  #game{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px 36px;align-items:start}
+  #game .meta{grid-column:1 / -1}
+  #game .feedback{margin-top:8px}
+}
 </style>
 
 <canvas id="confetti" aria-hidden="true"></canvas>
@@ -204,10 +247,10 @@ table.conj tr.me td:last-child{border-radius:0 8px 8px 0}
       <div>
         <p class="label">Les groupes de verbes</p>
         <div class="chips" id="groupChips">
-          <label class="chip"><input type="checkbox" id="g1" value="1" checked><span style="--c:var(--g1)"><i></i>1<sup>er</sup> groupe <small>chanter</small></span></label>
-          <label class="chip"><input type="checkbox" id="g2" value="2" checked><span style="--c:var(--g2)"><i></i>2<sup>e</sup> groupe <small>finir</small></span></label>
-          <label class="chip"><input type="checkbox" id="g3" value="3"><span style="--c:var(--g3)"><i></i>3<sup>e</sup> groupe <small>prendre</small></span></label>
-          <label class="chip"><input type="checkbox" id="g0" value="0"><span style="--c:var(--g0)"><i></i>Être et avoir</span></label>
+          <label class="chip"><input type="checkbox" id="g1" value="1" checked><span style="--c:var(--g1)"><i></i><b>1<sup>er</sup> groupe</b><small>chanter</small></span></label>
+          <label class="chip"><input type="checkbox" id="g2" value="2" checked><span style="--c:var(--g2)"><i></i><b>2<sup>e</sup> groupe</b><small>finir</small></span></label>
+          <label class="chip"><input type="checkbox" id="g3" value="3"><span style="--c:var(--g3)"><i></i><b>3<sup>e</sup> groupe</b><small>prendre</small></span></label>
+          <label class="chip"><input type="checkbox" id="g0" value="0"><span style="--c:var(--g0)"><i></i><b>Être et avoir</b></span></label>
         </div>
       </div>
       <div>
@@ -491,7 +534,7 @@ function tableHTML(v,t,p){
     '<tr'+(i===p.i?' class="me"':'')+'><td>'+esc(l)+'</td><td>'+esc(f)+'</td></tr>').join('')+'</tbody></table></div>';
 }
 const BRAVO=['Bravo !','Super !','Génial !','Parfait !','Excellent !','Bien joué !'];
-const OUPS=['Oups, pas tout à fait…','Presque !','Pas encore, mais tu progresses !'];
+const OUPS=['Oups, pas tout à fait…','Ce n\'est pas ça, regarde bien !','Pas encore, mais tu progresses !'];
 function check(){
   if(S.answered){ next(); return; }
   const {v,t,p}=S.queue[S.idx];
@@ -523,6 +566,7 @@ function check(){
   $('checkBtn').textContent=S.idx+1<S.queue.length?'Suivant':'Voir mon score';
   renderProgress();
   $('checkBtn').focus({preventScroll:true});
+  fb.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});
 }
 function next(){ S.idx++; if(S.idx<S.queue.length) renderQ(); else finish(); }
 $('answerForm').addEventListener('submit',e=>{ e.preventDefault(); check(); });
