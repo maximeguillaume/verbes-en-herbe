@@ -17,6 +17,16 @@ Petit jeu pour enfant pour s'entraîner à conjuguer les verbes français, dans 
 
 Ouvrir `index.html` dans un navigateur. Rien à installer.
 
+### Installer comme une application (iPhone, iPad)
+
+1. Ouvrir https://maximeguillaume.github.io/verbes-en-herbe/ dans **Safari**.
+2. Toucher le bouton **Partager**, puis **Sur l'écran d'accueil**.
+3. Le jeu s'ouvre ensuite en plein écran depuis son icône, et fonctionne aussi sans connexion après la première ouverture.
+
+Sur Android (Chrome) : menu ⋮ puis **Installer l'application**.
+
+<img src="icons/logo-1024.png" alt="Logo Verbes en Herbe" width="160">
+
 ## Ajouter des verbes
 
 Dans le script de `index.html` :

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <pattern id="seyes" width="512" height="32" patternUnits="userSpaceOnUse">
+      <rect width="512" height="32" fill="#1f2a6b"/>
+      <path d="M0 8.5H512M0 16.5H512M0 24.5H512" stroke="#2a3680" stroke-width="1.5"/>
+      <path d="M0 0.5H512" stroke="#3a48a0" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="512" height="512" fill="url(#seyes)"/>
+  <path d="M96 0V512" stroke="#e2566b" stroke-width="6"/>
+  <!-- stem and leaves -->
+  <path d="M352 196 C 350 160, 352 140, 360 112" fill="none" stroke="#2fae6a" stroke-width="18" stroke-linecap="round"/>
+  <path d="M358 120 C 320 80, 270 84, 246 108 C 280 140, 330 142, 358 120 Z" fill="#4fcf88"/>
+  <path d="M362 112 C 380 64, 430 48, 462 62 C 450 104, 404 126, 362 112 Z" fill="#23935a"/>
+  <path d="M358 120 C 320 104, 290 104, 262 108" fill="none" stroke="#1f7a49" stroke-width="5" stroke-linecap="round"/>
+  <path d="M362 112 C 392 92, 420 80, 448 70" fill="none" stroke="#7fe0a8" stroke-width="5" stroke-linecap="round"/>
+  <!-- handwritten V -->
+  <path d="M136 210 C 150 186, 182 186, 196 222 C 214 270, 232 350, 256 410 C 284 334, 312 250, 352 196" fill="none" stroke="#ffffff" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- star -->
+  <path d="M150 360 l9 19 21 3 -15 14 4 21 -19 -10 -19 10 4 -21 -15 -14 21 -3z" fill="#ffc83a"/>
+</svg>

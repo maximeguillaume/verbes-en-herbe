@@ -3,6 +3,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Verbes en Herbe</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/logo.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Verbes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#eef1f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1430" media="(prefers-color-scheme: dark)">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +53,11 @@
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--paper)}
+body{overscroll-behavior-y:none}
+.install{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--sheet);box-shadow:var(--shadow);border-radius:16px;padding:12px 16px}
+.install p{margin:0;flex:1 1 260px;min-width:0}
+.install svg{width:18px;height:18px;vertical-align:-3px}
 button,label,.chip input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 body{
   margin:0;
@@ -227,7 +241,7 @@ table.conj tr.me td:last-child{border-radius:0 8px 8px 0}
 <canvas id="confetti" aria-hidden="true"></canvas>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><h1>Verbes en <span>Herbe</span></h1></div>
+    <div class="brand"><img src="icons/logo.svg" alt="" width="44" height="44" style="border-radius:11px;align-self:center"><h1>Verbes en <span>Herbe</span></h1></div>
     <div class="tools">
       <span class="pill" title="Étoiles gagnées depuis le début">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--star)" d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
@@ -236,6 +250,13 @@ table.conj tr.me td:last-child{border-radius:0 8px 8px 0}
       <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true">Son : oui</button>
     </div>
   </header>
+
+  <div class="install" id="installTip" hidden>
+    <p>Pour installer le jeu sur l'écran d'accueil : touche <strong>Partager</strong>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5L12 3l4.5 4.5M5 11v9h14v-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      puis <strong>Sur l'écran d'accueil</strong>.</p>
+    <button class="icon-btn" id="installClose" type="button">OK</button>
+  </div>
 
   <main class="sheet">
     <!-- SETUP -->
@@ -595,5 +616,13 @@ $('againBtn').onclick=()=>start(buildQueue(S.queue.length));
 $('retryBtn').onclick=()=>start(S.missed.slice().sort(()=>Math.random()-.5));
 $('menuBtn').onclick=()=>show('setup');
 validateSetup();
+
+/* Installation as an app (iOS home screen) and offline cache */
+const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const standalone=navigator.standalone||window.matchMedia('(display-mode: standalone)').matches;
+let tipSeen=false; try{ tipSeen=localStorage.getItem('veh-install-tip')==='1' }catch(e){}
+if(isIOS&&!standalone&&!tipSeen&&location.protocol.startsWith('http')) $('installTip').hidden=false;
+$('installClose').onclick=()=>{ $('installTip').hidden=true; try{ localStorage.setItem('veh-install-tip','1') }catch(e){} };
+if('serviceWorker' in navigator&&location.protocol==='https:') navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
